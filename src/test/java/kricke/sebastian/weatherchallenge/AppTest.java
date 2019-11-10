@@ -1,4 +1,4 @@
-package de.exxcellent.challenge;
+package kricke.sebastian.weatherchallenge;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Example JUnit4 test case.
- * @author Benjamin Schmid <benjamin.schmid@exxcellent.de>
+ * @author Sebastian Kricke <Sebastian.Kricke@outlook.de>
  */
 public class AppTest {
 
@@ -25,7 +25,7 @@ public class AppTest {
 
     @Test
     public void runFootball() {
-        App.main("--football", "football.csv");
+        DataSetFilter.main("--football", "football.csv");
     }
 
 }
