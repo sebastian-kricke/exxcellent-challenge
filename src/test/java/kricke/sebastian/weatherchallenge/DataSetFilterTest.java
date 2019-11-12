@@ -21,16 +21,7 @@ public class DataSetFilterTest {
 	}
 
 	@Test
-	public void runDataSetFilterWithoutParameters() {
-		String expectedOutput = "\n" + 
-				"Welcome to the filter application! In next steps you can choose your data source to display the filtered result: \n" + 
-				"\n" + 
-				"(1) - Filter weather data from CSV-Source by lowest temperature difference (Difference between Min-and MaxTemperature of the day)\n" + 
-				"\n" + 
-				"(Q) - Quit \n" + 
-				"\n" + 
-				"\n" + 
-				"Selection: ";
+	public void runDataSetFilterWithoutParameters() {		
 		final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
 		System.setOut(new PrintStream(outContent));
