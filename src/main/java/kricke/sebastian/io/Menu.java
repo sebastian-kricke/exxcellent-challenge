@@ -16,7 +16,7 @@ public class Menu {
 	 * @param promp	The question to request the input.
 	 * @return	Returns true if user chosen "y" or false if user inputed "n".
 	 */
-	public static boolean frageWeiter(String prompt) {
+	public static boolean shouldProceed(String prompt) {
 		boolean shouldProceed = false;
 		String choice = "";
 		
@@ -40,7 +40,7 @@ public class Menu {
 	 * @param menuItems	The selectable menu items that can be chosen.
 	 * @return	The index of the chosen menu item or "-1" to quit.
 	 */
-	public static int auswahlMenu(String[] menuItems) {
+	public static int startSelectionMenu(String[] menuItems) {
 		String choice = "";
 		int targetedMenuIndex = 0;
 		
