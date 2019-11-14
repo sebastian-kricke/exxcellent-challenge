@@ -26,7 +26,7 @@ public class WeatherTest {
 		Weather testDay = new Weather();
 		Integer expectedDifference = 0;		
 		
-		assertEquals(expectedDifference, testDay.getDifference(), "Wrong temperature spread was calculated by specific constructor.");
+		assertEquals(expectedDifference, testDay.getDifference(), "Wrong temperature spread was calculated by default constructor.");
 	}
 	
 	@Test
@@ -35,7 +35,7 @@ public class WeatherTest {
 		testDay.setMinimumTemperature(-20);
 		Integer expectedDifference = -280;		
 		
-		assertEquals(expectedDifference, testDay.getDifference(), "Wrong temperature spread was calculated by specific constructor.");
+		assertEquals(expectedDifference, testDay.getDifference(), "Wrong temperature spread was calculated by setMinimumTemperature.");
 	}
 	
 	@Test
@@ -44,7 +44,7 @@ public class WeatherTest {
 		testDay.setMaximumTemperature(-20);
 		Integer expectedDifference = 280;		
 		
-		assertEquals(expectedDifference, testDay.getDifference(), "Wrong temperature spread was calculated by specific constructor.");
+		assertEquals(expectedDifference, testDay.getDifference(), "Wrong temperature spread was calculated bysetMaximumTemperature.");
 	}
 	
 	@Test
@@ -54,7 +54,7 @@ public class WeatherTest {
 		testDay.setMaximumTemperature(20);
 		Integer expectedDifference = 40;		
 		
-		assertEquals(expectedDifference, testDay.getDifference(), "Wrong temperature spread was calculated by specific constructor.");
+		assertEquals(expectedDifference, testDay.getDifference(), "Wrong temperature spread was calculated by setMinimumTemperature and setMaximumTemperature.");
 	}
 
 }
