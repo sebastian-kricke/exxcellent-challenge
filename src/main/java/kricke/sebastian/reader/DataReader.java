@@ -18,13 +18,14 @@ public interface DataReader<T> {
 	/**
 	 * Reads the file identified by filename and source path and deserializes the content to an object of type T filled with the read values.
 	 * 
-	 * @param source 	The source, where to find the file.
-	 * @param filename	The name of the file to read data from.
+	 * @param source 	 The source, where to find the file.
+	 * @param filename	 The name of the file to read data from.
+	 * @param targetType The type of the deserialized model.
 	 * @return			The deserialized instance of type T.
 	 * @throws ReadingModelFailedException Thrown if the source file was read, but deserialiation to targeted type was not successful.
 	 * @throws FileNotFoundException 	   Thrown if no file was found with the given filename and source.
 	 * @throws IOException			 	   Thrown if the found file was not read successfully.
 	 * @throws InvalidParameterException   Thrown if no filename was given.
 	 */
-	List<T> Read(String source, String filename) throws ReadingModelFailedException, FileNotFoundException, IOException, InvalidParameterException  ;
+	List<T> Read(String source, String filename, Class<T> targetType ) throws ReadingModelFailedException, FileNotFoundException, IOException, InvalidParameterException  ;
 }

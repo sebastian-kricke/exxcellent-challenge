@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import kricke.sebastian.io.Menu;
-import kricke.sebastian.reader.CsvWeatherReader;
+import kricke.sebastian.reader.CsvGenericReader;
 import kricke.sebastian.reader.DataReader;
 import kricke.sebastian.reader.ReadingModelFailedException;
 import kricke.sebastian.weather.Weather;
@@ -114,10 +114,10 @@ public final class DataSetFilter {
 	 * Possibly fired exception´s stacktrace are print on error console.
 	 */
 	private static Weather getDayWithLowestTemperatureSpread() {
-		DataReader<Weather> reader = new CsvWeatherReader();
+		DataReader<Weather> reader = new CsvGenericReader<Weather>();
 
 		try {
-			List<Weather> existingWeatherData = reader.Read(null, "weather.csv");
+			List<Weather> existingWeatherData = reader.Read(null, "weather.csv", Weather.class);
 			List<Weather> sortedWeatherDataByDifference = existingWeatherData.stream()
 					.sorted(Comparator.comparing(Weather::getDifference)).collect(Collectors.toList());
 

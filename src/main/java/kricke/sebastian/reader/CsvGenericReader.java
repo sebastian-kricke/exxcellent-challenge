@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package kricke.sebastian.reader;
 
 import java.io.FileNotFoundException;
@@ -5,35 +8,30 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.List;
+
 import com.opencsv.bean.CsvToBeanBuilder;
 
-import kricke.sebastian.weather.Weather;
-
 /**
- * Provides reading serialized model data from csv-files.
- * 
  * @author Sebastian Kricke <Sebastian.Kricke@outlook.de>
  *
  */
-public class CsvWeatherReader implements DataReader<Weather> {
+public class CsvGenericReader<T> implements DataReader<T> {
 
 	@Override
-	public List<Weather> Read(String source, String filename)
-			throws ReadingModelFailedException, FileNotFoundException, IOException {
+	public List<T> Read(String source, String filename, Class<T> targetType)
+			throws ReadingModelFailedException, FileNotFoundException, IOException, InvalidParameterException {
 		if (source == null || source.isEmpty()) {
 			source = "/kricke/sebastian/weatherchallenge/";
 		}
-		
-		if(filename == null || filename.isEmpty()) {
+
+		if (filename == null || filename.isEmpty()) {
 			throw new InvalidParameterException("no filename");
 		}
-		
+
 		String resourcePath = this.getClass().getResource(source + filename).getFile();
 		FileReader filereader = new FileReader(resourcePath);
-		List<Weather> deserialized = new CsvToBeanBuilder<Weather>(filereader).withType(Weather.class).build().parse();
-
+		List<T> deserialized = new CsvToBeanBuilder<T>(filereader).withType(targetType).build().parse();
 
 		return deserialized;
 	}
-
 }
