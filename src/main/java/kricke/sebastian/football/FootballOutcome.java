@@ -20,7 +20,7 @@ public class FootballOutcome implements FootballData, Differentiable<Integer> {
 
 	@CsvBindByName()
 	private int points;
-	@CsvBindByName()
+	@CsvBindByName(column = "Goals Allowed")
 	private int goalsAllowed;
 	@CsvBindByName()
 	private int goals;
@@ -33,7 +33,7 @@ public class FootballOutcome implements FootballData, Differentiable<Integer> {
 	@CsvBindByName()
 	private int games;
 	@CsvBindByName()
-	private String teamName;
+	private String team;
 	private Integer difference;
 
 	/**
@@ -69,13 +69,13 @@ public class FootballOutcome implements FootballData, Differentiable<Integer> {
 	}
 
 	@Override
-	public String getTeamName() {
-		return teamName;
+	public String getTeam() {
+		return team;
 	}
 
 	@Override
-	public void setTeamName(String name) {
-		this.teamName = name;
+	public void setTeam(String name) {
+		this.team = name;
 	}
 
 	@Override

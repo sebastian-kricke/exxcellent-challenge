@@ -14,14 +14,14 @@ public interface FootballData {
 	 * 
 	 * @return The football team´s name.
 	 */
-	public String getTeamName();
+	public String getTeam();
 
 	/**
 	 * Sets the name of the team.
 	 * 
 	 * @param name
 	 */
-	public void setTeamName(String name);
+	public void setTeam(String name);
 
 	/**
 	 * Gets the number of ran games.

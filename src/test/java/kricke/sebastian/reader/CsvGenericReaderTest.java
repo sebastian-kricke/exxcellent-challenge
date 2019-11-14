@@ -50,7 +50,7 @@ class CsvGenericReaderTest {
 		DataReader<FootballOutcome> reader = new CsvGenericReader<FootballOutcome>();
 		List<FootballOutcome> existingWeatherData = reader.Read(null, "football.csv", FootballOutcome.class);
 		FootballOutcome expectedFirst = new FootballOutcome();
-		expectedFirst.setTeamName("Arsenal");
+		expectedFirst.setTeam("Arsenal");
 		expectedFirst.setGames(38);
 		expectedFirst.setWins(26);
 		expectedFirst.setLosses(9);
@@ -59,7 +59,7 @@ class CsvGenericReaderTest {
 		expectedFirst.setGoalsAllowed(36);
 		expectedFirst.setPoints(87);
 
-		assertEquals(expectedFirst.getTeamName(), existingWeatherData.get(0).getTeamName());
+		assertEquals(expectedFirst.getTeam(), existingWeatherData.get(0).getTeam());
 		assertEquals(expectedFirst.getGames(), existingWeatherData.get(0).getGames());
 		assertEquals(expectedFirst.getWins(), existingWeatherData.get(0).getWins());
 		assertEquals(expectedFirst.getLosses(), existingWeatherData.get(0).getLosses());
