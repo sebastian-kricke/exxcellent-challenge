@@ -3,6 +3,7 @@ package kricke.sebastian.reader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.List;
 import com.opencsv.bean.CsvToBeanBuilder;
 
@@ -24,7 +25,7 @@ public class CsvWeatherReader implements DataReader<Weather> {
 		}
 		
 		if(filename == null || filename.isEmpty()) {
-			throw new FileNotFoundException("no filename");
+			throw new InvalidParameterException("no filename");
 		}
 		
 		String resourcePath = this.getClass().getResource(source + filename).getFile();

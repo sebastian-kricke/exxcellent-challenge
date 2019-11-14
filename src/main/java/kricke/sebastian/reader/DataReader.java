@@ -2,6 +2,7 @@ package kricke.sebastian.reader;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.List;
 
 /**
@@ -23,6 +24,7 @@ public interface DataReader<T> {
 	 * @throws ReadingModelFailedException Thrown if the source file was read, but deserialiation to targeted type was not successful.
 	 * @throws FileNotFoundException 	   Thrown if no file was found with the given filename and source.
 	 * @throws IOException			 	   Thrown if the found file was not read successfully.
+	 * @throws InvalidParameterException   Thrown if no filename was given.
 	 */
-	List<T> Read(String source, String filename) throws ReadingModelFailedException, FileNotFoundException, IOException  ;
+	List<T> Read(String source, String filename) throws ReadingModelFailedException, FileNotFoundException, IOException, InvalidParameterException  ;
 }
