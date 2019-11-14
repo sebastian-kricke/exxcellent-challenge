@@ -40,7 +40,7 @@ public class FootballOutcome implements FootballData, Differentiable<Integer> {
 	 * Default constructor for default valued instance.
 	 */
 	public FootballOutcome() {
-		this(-1, -1);
+		this(0, 0);
 	}
 
 	/**
