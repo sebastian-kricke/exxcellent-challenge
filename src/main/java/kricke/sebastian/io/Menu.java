@@ -59,7 +59,7 @@ public class Menu {
 			}
 		} while (!(choice.equals("q") || choice.equals("Q") || (targetedMenuIndex > 0 && targetedMenuIndex <= menuItems.length)));
 		
-		return targetedMenuIndex - 1;
+		return targetedMenuIndex;
 	}	
 	
 }

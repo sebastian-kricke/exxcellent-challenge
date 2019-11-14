@@ -1,6 +1,15 @@
 package kricke.sebastian.weatherchallenge;
 
+import java.io.IOException;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import kricke.sebastian.io.Menu;
+import kricke.sebastian.reader.CsvWeatherReader;
+import kricke.sebastian.reader.DataReader;
+import kricke.sebastian.reader.ReadingModelFailedException;
+import kricke.sebastian.weather.Weather;
 
 /**
  * Filters data sets by choosen difference calculations.
@@ -15,15 +24,17 @@ public final class DataSetFilter {
 	 */
 	public static void main(String... args) {
 		if (isValidParameter(args) && args[0].equals("--weather")) {
-			// evaluate weather data by lowest temperature difference
 
-			String dayWithSmallestTempSpread = "20";
-			System.out.printf("Day with smallest temperature spread : %s%n", dayWithSmallestTempSpread);
+			runConsoleWeather();
+
 		} else if (args.length == 0) {
+			
 			StartMenuControlledFilter();
 
 		} else {
+			
 			showUserInfo();
+			
 		}
 	}
 
@@ -37,13 +48,13 @@ public final class DataSetFilter {
 	 */
 	private static boolean isValidParameter(String[] args) {
 		boolean ok = false;
-		
+
 		if (args.length == 1 || args.length == 2) {
 			if ((args[0].equals("--weather"))) {
 				ok = true;
 			}
 		}
-		
+
 		return ok;
 	}
 
@@ -68,19 +79,65 @@ public final class DataSetFilter {
 
 		int choice = 0;
 		String[] menuItems = {
-				"Filter weather data from CSV-Source by lowest temperature difference (Difference between Min-and MaxTemperature of the day)" };
+				"Filter weather data from CSV-Source by lowest temperature difference (Difference between Min- and Max-Temperature of the day)" };
 
 		do {
 			choice = Menu.startSelectionMenu(menuItems);
 
 			switch (choice) {
 			case 1:
-				// evaluate weather data by lowest temperature difference
+				runConsoleWeather();
 				break;
 
 			default:
 				break;
 			}
-		} while (choice > -1);
+		} while (choice > 0);
+	}
+
+	/**
+	 * Starts the weather calculation on console. The weather resource is read,
+	 * differences between Minimum and Maximum Temperatures of the daily weather
+	 * data are calculated and the day with the lowest temperature spread is printed
+	 * on output console.
+	 */
+	private static void runConsoleWeather() {
+		// evaluate weather data by lowest temperature difference
+		Weather result = getDayWithLowestTemperatureSpread();
+		printResultForWeather(result);
+	}
+
+	/**
+	 * Evaluates weather data from "weather.csv" to find the lowest temperature
+	 * difference. Returns the found first result or null, if exception happened.
+	 * 
+	 * Possibly fired exception´s stacktrace are print on error console.
+	 */
+	private static Weather getDayWithLowestTemperatureSpread() {
+		DataReader<Weather> reader = new CsvWeatherReader();
+
+		try {
+			List<Weather> existingWeatherData = reader.Read(null, "weather.csv");
+			List<Weather> sortedWeatherDataByDifference = existingWeatherData.stream()
+					.sorted(Comparator.comparing(Weather::getDifference)).collect(Collectors.toList());
+
+			Weather weatherWithLowestTemperatureDifference = sortedWeatherDataByDifference.get(0);
+
+			return weatherWithLowestTemperatureDifference;
+		} catch (ReadingModelFailedException | IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * Prints out the result into human readable sentence on the console.
+	 * 
+	 * @param result The found weather data with the smallest temperature spread in
+	 *               comparison of a dataset.
+	 */
+	private static void printResultForWeather(Weather result) {
+		System.out.printf("Day with smallest temperature spread : %s with %s degree difference%n",
+				result.getDayOfMonth(), result.getDifference());
 	}
 }
