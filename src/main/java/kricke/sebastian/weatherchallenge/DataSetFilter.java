@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import kricke.sebastian.football.FootballOutcome;
 import kricke.sebastian.io.Menu;
 import kricke.sebastian.reader.CsvGenericReader;
 import kricke.sebastian.reader.DataReader;
@@ -27,14 +28,18 @@ public final class DataSetFilter {
 
 			runConsoleWeather();
 
+		} else if (isValidParameter(args) && args[0].equals("--football")) {
+
+			runConsoleFootball();
+
 		} else if (args.length == 0) {
-			
+
 			StartMenuControlledFilter();
 
 		} else {
-			
+
 			showUserInfo();
-			
+
 		}
 	}
 
@@ -50,7 +55,7 @@ public final class DataSetFilter {
 		boolean ok = false;
 
 		if (args.length == 1 || args.length == 2) {
-			if ((args[0].equals("--weather"))) {
+			if ((args[0].equals("--weather")) || (args[0].equals("--football"))) {
 				ok = true;
 			}
 		}
@@ -64,6 +69,7 @@ public final class DataSetFilter {
 	private static void showUserInfo() {
 		System.out.println("The call of DataSetFilter has been executed with wrong parameters.\n\n"
 				+ "Valid parameters are: \n" + "... \"--weather\", \"[filename of data source]\" n \n"
+				+ "... \"--football\", \"[filename of data source]\" n \n"
 				+ "The filename is optional. If not given as parameter the default resource will be filtered."
 				+ "or start DataSetFilter without any parameters to run menu controlled interface.");
 
@@ -79,14 +85,19 @@ public final class DataSetFilter {
 
 		int choice = 0;
 		String[] menuItems = {
-				"Filter weather data from CSV-Source by lowest temperature difference (Difference between Min- and Max-Temperature of the day)" };
+				"Filter weather data from CSV-Source by lowest temperature difference (Difference between Min- and Max-Temperature of the day)",
+				"Filter football team outcomes from CSV-Source by lowest goal difference (Difference between goals scored by and against each team)"};
 
 		do {
+			System.out.println();
 			choice = Menu.startSelectionMenu(menuItems);
 
 			switch (choice) {
 			case 1:
 				runConsoleWeather();
+				break;
+			case 2:
+				runConsoleFootball();
 				break;
 
 			default:
@@ -102,16 +113,25 @@ public final class DataSetFilter {
 	 * on output console.
 	 */
 	private static void runConsoleWeather() {
-		// evaluate weather data by lowest temperature difference
 		Weather result = getDayWithLowestTemperatureSpread();
-		printResultForWeather(result);
+		printResultOutput("Day with smallest temperature spread :", "degree", result.getDayOfMonth(), result.getDifference());
+	}
+
+	/**
+	 * Starts the football calculation on console. The football resource is read,
+	 * differences between goals scored by and against each team are calculated and
+	 * the team with the lowest goal difference is printed on output console.
+	 */
+	private static void runConsoleFootball() {
+		FootballOutcome result = getTeamWithLowestGoalDifference();
+		printResultOutput("Team with lowest goal difference :", "goals", result.getTeam(), result.getDifference());
 	}
 
 	/**
 	 * Evaluates weather data from "weather.csv" to find the lowest temperature
 	 * difference. Returns the found first result or null, if exception happened.
 	 * 
-	 * Possibly fired exception´s stacktrace are print on error console.
+	 * Possibly fired exception´s stacktraces are print on error console.
 	 */
 	private static Weather getDayWithLowestTemperatureSpread() {
 		DataReader<Weather> reader = new CsvGenericReader<Weather>();
@@ -128,6 +148,39 @@ public final class DataSetFilter {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * Evaluates football outcomes from "football.csv" to find the lowest goal
+	 * difference. Returns the found first result or null, if exception happened.
+	 * 
+	 * Possibly fired exception´s stacktraces are print on error console.
+	 */
+	private static FootballOutcome getTeamWithLowestGoalDifference() {
+		DataReader<FootballOutcome> reader = new CsvGenericReader<FootballOutcome>();
+
+		try {
+			List<FootballOutcome> existingFootballData = reader.Read(null, "football.csv", FootballOutcome.class);
+			List<FootballOutcome> sortedFootballDataByDifference = existingFootballData.stream()
+					.sorted(Comparator.comparing(FootballOutcome::getDifference)).collect(Collectors.toList());
+
+			FootballOutcome weatherWithLowestTemperatureDifference = sortedFootballDataByDifference.get(0);
+
+			return weatherWithLowestTemperatureDifference;
+		} catch (ReadingModelFailedException | IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * Prints out the result into human readable sentence on the console.
+	 * 
+	 * @param result The found weather data with the smallest temperature spread in
+	 *               comparison of a dataset.
+	 */
+	private static void printResultOutput(String resultHeader, String resultUnit, Object resultValue, Object resultDetailValue) {
+		System.out.printf("%n%s %s with %s %s difference%n%n", resultHeader, resultValue, resultDetailValue, resultUnit);
 	}
 
 	/**
