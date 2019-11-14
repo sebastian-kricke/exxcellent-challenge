@@ -1,5 +1,7 @@
 package kricke.sebastian.weather;
 
+import com.opencsv.bean.CsvBindByName;
+
 import kricke.sebastian.filter.Differentiable;
 
 /**
@@ -13,12 +15,23 @@ import kricke.sebastian.filter.Differentiable;
  */
 public class Weather implements WeatherData, Differentiable<Integer>{
 
+	@CsvBindByName(column = "day")
 	private int dayOfMonth = -1;
+	@CsvBindByName(column = "MxT")
 	private int maximumTemperature = -300;
+	@CsvBindByName(column = "MnT")
 	private int minimumTemperature = -300;
+	@CsvBindByName(column = "AvT")
 	private int averageTemperature = -300;
 	private Integer difference = -1;
 
+	/**
+	 * Default constructor for a weather instance with default values set.
+	 */
+	public Weather() {
+		this(-1,-300,-300);
+	}
+	
 	/**
 	 * Stores the weather data of a single day.
 	 * 
@@ -83,6 +96,7 @@ public class Weather implements WeatherData, Differentiable<Integer>{
 	 */
 	public void setMaximumTemperature(int maximum) {
 		this.maximumTemperature = maximum;
+		calculateDifference();
 	}
 
 	/**
@@ -99,6 +113,7 @@ public class Weather implements WeatherData, Differentiable<Integer>{
 	 */
 	public void setMinimumTemperature(int minimum) {
 		this.minimumTemperature = minimum;
+		calculateDifference();
 	}
 
 	/**
