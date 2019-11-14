@@ -31,13 +31,16 @@ public class DataSetFilterTest {
 
 		assertTrue(outContent.toString().contains("Welcome to the filter application!"), "Expected menu didn´t started.");
 		assertTrue(outContent.toString().contains("(1)"), "Expected menu didn´t started.");
+		assertTrue(outContent.toString().contains("(2)"), "Expected menu didn´t started.");
 		assertTrue(outContent.toString().contains("Selection:"), "Expected menu didn´t started.");		
 	}
 
 	@Test
 	public void runDataSetFilterWithInvalidParameters() {
 		String expectedOutput = "The call of DataSetFilter has been executed with wrong parameters.\n\n"
-				+ "Valid parameters are: \n" + "... \"--weather\", \"[filename of data source]\" n \n"
+				+ "Valid parameters are: \n" 
+				+ "... \"--weather\", \"[filename of data source]\" n \n"
+				+ "... \"--football\", \"[filename of data source]\" n \n"
 				+ "The filename is optional. If not given as parameter the default resource will be filtered."
 				+ "or start DataSetFilter without any parameters to run menu controlled interface.";
 		final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -58,6 +61,17 @@ public class DataSetFilterTest {
 		DataSetFilter.main("--weather");
 
 		assertTrue(outContent.toString().contains(expectedOutput), "Weather calculation doesn´t returned the expected value.");
+	}
+	
+	@Test
+	public void runFootball() {
+		String expectedOutput = "Leicester";
+		final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+
+		System.setOut(new PrintStream(outContent));
+		DataSetFilter.main("--football");
+
+		assertTrue(outContent.toString().contains(expectedOutput), "Football calculation doesn´t returned the expected value.");
 	}
 
 }
