@@ -51,7 +51,7 @@ public class DataSetFilterTest {
 
 	@Test
 	public void runWeather() {
-		String expectedOutput = "Day with smallest temperature spread : 20";
+		String expectedOutput = "Day with smallest temperature spread : 14";
 		final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
 		System.setOut(new PrintStream(outContent));
