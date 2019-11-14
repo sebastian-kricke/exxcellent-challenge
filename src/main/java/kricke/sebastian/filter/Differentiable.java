@@ -7,7 +7,7 @@ package kricke.sebastian.filter;
  *
  * @param <T> Any type of number that allows to calculate a difference between them.
  */
-public interface Differentiable<T extends Number> {
+public interface Differentiable<T extends Number & Comparable<T>> {
 	/**
 	 * Calculates the current difference between two values.
 	 */

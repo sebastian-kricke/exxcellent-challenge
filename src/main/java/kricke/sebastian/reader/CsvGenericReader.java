@@ -18,7 +18,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 public class CsvGenericReader<T> implements DataReader<T> {
 
 	@Override
-	public List<T> Read(String source, String filename, Class<T> targetType)
+	public List<T> Read(String source, String filename, Class<? extends T> targetType)
 			throws ReadingModelFailedException, FileNotFoundException, IOException, InvalidParameterException {
 		if (source == null || source.isEmpty()) {
 			source = "/kricke/sebastian/weatherchallenge/";

@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import kricke.sebastian.filter.Differentiable;
 import kricke.sebastian.football.FootballOutcome;
 import kricke.sebastian.io.Menu;
 import kricke.sebastian.reader.CsvGenericReader;
@@ -113,7 +114,8 @@ public final class DataSetFilter {
 	 * on output console.
 	 */
 	private static void runConsoleWeather() {
-		Weather result = getDayWithLowestTemperatureSpread();
+		Weather result = DataSetFilter.<Weather>getLowestDifference(null, "weather.csv", Weather.class);
+		
 		printResultOutput("Day with smallest temperature spread :", "degree", result.getDayOfMonth(), result.getDifference());
 	}
 
@@ -123,56 +125,35 @@ public final class DataSetFilter {
 	 * the team with the lowest goal difference is printed on output console.
 	 */
 	private static void runConsoleFootball() {
-		FootballOutcome result = getTeamWithLowestGoalDifference();
+		FootballOutcome result = DataSetFilter.<FootballOutcome>getLowestDifference(null, "football.csv", FootballOutcome.class);
+		
 		printResultOutput("Team with lowest goal difference :", "goals", result.getTeam(), result.getDifference());
-	}
-
-	/**
-	 * Evaluates weather data from "weather.csv" to find the lowest temperature
-	 * difference. Returns the found first result or null, if exception happened.
-	 * 
-	 * Possibly fired exception´s stacktraces are print on error console.
-	 */
-	private static Weather getDayWithLowestTemperatureSpread() {
-		DataReader<Weather> reader = new CsvGenericReader<Weather>();
-
-		try {
-			List<Weather> existingWeatherData = reader.Read(null, "weather.csv", Weather.class);
-			List<Weather> sortedWeatherDataByDifference = existingWeatherData.stream()
-					.sorted(Comparator.comparing(Weather::getDifference)).collect(Collectors.toList());
-
-			Weather weatherWithLowestTemperatureDifference = sortedWeatherDataByDifference.get(0);
-
-			return weatherWithLowestTemperatureDifference;
-		} catch (ReadingModelFailedException | IOException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 	
 	/**
-	 * Evaluates football outcomes from "football.csv" to find the lowest goal
-	 * difference. Returns the found first result or null, if exception happened.
+	 * Evaluates data from given source to find the lowest difference. 
+	 * Returns the found first result or null, if exception happened.
 	 * 
 	 * Possibly fired exception´s stacktraces are print on error console.
 	 */
-	private static FootballOutcome getTeamWithLowestGoalDifference() {
-		DataReader<FootballOutcome> reader = new CsvGenericReader<FootballOutcome>();
+	private static <T extends Differentiable<?>> T getLowestDifference(String fileSource, String filename, Class<? extends T> targetType) {
+		DataReader<T> reader = new CsvGenericReader<T>();
 
 		try {
-			List<FootballOutcome> existingFootballData = reader.Read(null, "football.csv", FootballOutcome.class);
-			List<FootballOutcome> sortedFootballDataByDifference = existingFootballData.stream()
-					.sorted(Comparator.comparing(FootballOutcome::getDifference)).collect(Collectors.toList());
+			List<T> existingData = reader.Read(fileSource, filename, targetType);
+			List<T> sortedDataByDifference = existingData.stream()
+					.sorted(Comparator.comparing(Differentiable::getDifference)).collect(Collectors.toList());
 
-			FootballOutcome weatherWithLowestTemperatureDifference = sortedFootballDataByDifference.get(0);
-
-			return weatherWithLowestTemperatureDifference;
+			T resultWithLowestDifference = sortedDataByDifference.get(0);
+			
+			return resultWithLowestDifference;
+			
 		} catch (ReadingModelFailedException | IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-
+		
 	/**
 	 * Prints out the result into human readable sentence on the console.
 	 * 
@@ -181,16 +162,5 @@ public final class DataSetFilter {
 	 */
 	private static void printResultOutput(String resultHeader, String resultUnit, Object resultValue, Object resultDetailValue) {
 		System.out.printf("%n%s %s with %s %s difference%n%n", resultHeader, resultValue, resultDetailValue, resultUnit);
-	}
-
-	/**
-	 * Prints out the result into human readable sentence on the console.
-	 * 
-	 * @param result The found weather data with the smallest temperature spread in
-	 *               comparison of a dataset.
-	 */
-	private static void printResultForWeather(Weather result) {
-		System.out.printf("Day with smallest temperature spread : %s with %s degree difference%n",
-				result.getDayOfMonth(), result.getDifference());
 	}
 }
