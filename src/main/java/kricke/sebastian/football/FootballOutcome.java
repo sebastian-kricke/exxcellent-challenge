@@ -127,6 +127,7 @@ public class FootballOutcome implements FootballData, Differentiable<Integer> {
 	@Override
 	public void setGoals(int numberOfGoals) {
 		this.goals = numberOfGoals;
+		calculateDifference();
 	}
 
 	@Override
@@ -137,6 +138,7 @@ public class FootballOutcome implements FootballData, Differentiable<Integer> {
 	@Override
 	public void setGoalsAllowed(int numberOfGoalsAllowed) {
 		this.goalsAllowed = numberOfGoalsAllowed;
+		calculateDifference();
 	}
 
 	@Override
